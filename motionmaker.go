@@ -158,8 +158,6 @@ func fetchData() <-chan convert.FeatureInfo {
 
 
 func processData(a <-chan convert.FeatureInfo) {
-	var tokenswritten int
-
 	//prepare each feature for leveldb
 	for {
 
