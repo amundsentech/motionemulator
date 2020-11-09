@@ -178,29 +178,15 @@ func processData(a <-chan convert.FeatureInfo) {
 			// remove the existing value
 			err := current.LevelDB.Delete(payload.Token, nil)
 			if err != nil {
-                                log.Printf("Could not delete, %v", payload.Token)
+                                log.Printf("Could not delete the 'current' key, %v", payload.Token)
                                 return
-                        }
-
-			_, err = current.LevelDB.Get(payload.Token,nil)
-			if err != nil {
-                                log.Printf("Key of %v successfully deleted", string(payload.Token))
                         }
 
 			// put the mutated collection into the leveldb
 			err = current.LevelDB.Put(payload.Token, payload.Value, nil)
 			if err != nil {
-				log.Printf("Could not write the key %v", payload.Token)
+				log.Printf("Could not write the 'current' key %v", payload.Token)
 				return
-			}
-
-			log.Printf("Outbound dataset:\n%v",string(payload.Value))
-
-			log.Printf("Key of %v successfull written",string(payload.Token))
-
-			tokenswritten += 1
-			if tokenswritten%10 == 0 {
-				log.Printf("%v features written to db", tokenswritten)
 			}
 
 			time.Sleep(500000 * time.Microsecond)
@@ -221,8 +207,6 @@ func prepUNITYValue(feature *convert.FeatureInfo, token []byte) *Payload {
 	// is there already a cellection with the same s2 key?
 	existing, _ := current.LevelDB.Get(token, nil)
 
-	log.Printf("Inbound dataset:\n%v",string(existing))
-
 	// if so, retain the information
 	if len(existing) > 0 {
 		err := json.Unmarshal(existing, &indataset)
@@ -234,7 +218,6 @@ func prepUNITYValue(feature *convert.FeatureInfo, token []byte) *Payload {
 	//if a feature already exists with the ID, don't use it
 	for _, test := range indataset.Points {
 		if test.ID != feature.ID {
-			log.Printf("test.ID '%s' does not match feature.ID '%s'",test.ID,feature.ID)
 			outdataset.Points = append(outdataset.Points,test)
 		}
 	}
