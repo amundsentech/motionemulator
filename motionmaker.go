@@ -21,16 +21,16 @@ import (
 )
 
 const (
-	leveldbpath = "/data/leveldb/"
+	currentleveldbpath = "/data/leveldb/"
 	currentdb = "current"
-	points = "circle_of_points.csv"
+	currentpoints = "circle_of_points.csv"
 
 	//set the s2 cell parameters
 	maxLevel = 10
 	minLevel = 10
 	maxCells = 10
 )
-
+/*
 type Params struct {
 	DB        string      //database name
 	TB        string      //table name
@@ -38,6 +38,7 @@ type Params struct {
 	Output    string      //geojson or unity
 	LevelDB   *leveldb.DB //the db connection
 }
+*/
 
 type Payload struct {
 	Token []byte
@@ -48,6 +49,7 @@ var (
 	params Params
 )
 
+/*
 func main() {
 	// creates a new leveldb conn in params.LevelDB
 	err := LevelDBInit()
@@ -61,25 +63,27 @@ func main() {
 		runagain()
 	}
 }
+*/
 
-func runagain() {
+func RunCurrent(params *nearme.Params) {
 	fetched := fetchData()
 	processData(fetched)
 }
 
+/*
 func LevelDBInit() error {
 	var err error
 
 	params.TB = currentdb
 
 	// make sure leveldb directory exists
-	path := filepath.Join(leveldbpath)
+	path := filepath.Join(currentleveldbpath)
 
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		os.Mkdir(path, os.ModePerm)
 	}
 
-	levelDBName := filepath.Join(leveldbpath, params.TB)
+	levelDBName := filepath.Join(currentleveldbpath, params.TB)
 
 	// connect to new leveldb
 	params.LevelDB, err = leveldb.OpenFile(levelDBName, nil)
@@ -92,6 +96,7 @@ func LevelDBInit() error {
 
 	return err
 }
+*/
 
 func fetchData() <-chan convert.FeatureInfo {
 	a := make(chan convert.FeatureInfo)
