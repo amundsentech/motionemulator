@@ -7,7 +7,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"path/filepath"
 	"strconv"
 	"time"
 
@@ -61,7 +60,7 @@ func main() {
 */
 
 func RunCurrent(working *leveldb.DB) {
-	current.Leveldb = working
+	current.LevelDB = working
 	fetched := fetchData()
 	processData(fetched)
 }
@@ -103,7 +102,7 @@ func fetchData() <-chan convert.FeatureInfo {
 		for {
 
 		// connect to and parse CSV of points
-		csvfile, err := os.Open(points)
+		csvfile, err := os.Open(currentpoints)
 		if err != nil {
 			log.Fatalln("Couldn't open the csv file", err)
 		}
