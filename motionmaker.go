@@ -30,15 +30,10 @@ const (
 	minLevel = 10
 	maxCells = 10
 )
-/*
-type Params struct {
-	DB        string      //database name
-	TB        string      //table name
-	Overwrite string      //yes or no
-	Output    string      //geojson or unity
+
+type CParams struct {
 	LevelDB   *leveldb.DB //the db connection
 }
-*/
 
 type Payload struct {
 	Token []byte
@@ -46,7 +41,7 @@ type Payload struct {
 }
 
 var (
-	params Params
+	current CParams
 )
 
 /*
@@ -65,7 +60,8 @@ func main() {
 }
 */
 
-func RunCurrent(params *nearme.Params) {
+func RunCurrent(working *leveldb.DB) {
+	current.Leveldb = working
 	fetched := fetchData()
 	processData(fetched)
 }
@@ -181,19 +177,19 @@ func processData(a <-chan convert.FeatureInfo) {
 			payload := prepUNITYValue(&feature, []byte(token))
 
 			// remove the existing value
-			err := params.LevelDB.Delete(payload.Token, nil)
+			err := current.LevelDB.Delete(payload.Token, nil)
 			if err != nil {
                                 log.Printf("Could not delete, %v", payload.Token)
                                 return
                         }
 
-			_, err = params.LevelDB.Get(payload.Token,nil)
+			_, err = current.LevelDB.Get(payload.Token,nil)
 			if err != nil {
                                 log.Printf("Key of %v successfully deleted", string(payload.Token))
                         }
 
 			// put the mutated collection into the leveldb
-			err = params.LevelDB.Put(payload.Token, payload.Value, nil)
+			err = current.LevelDB.Put(payload.Token, payload.Value, nil)
 			if err != nil {
 				log.Printf("Could not write the key %v", payload.Token)
 				return
@@ -224,7 +220,7 @@ func prepUNITYValue(feature *convert.FeatureInfo, token []byte) *Payload {
 	var indataset,outdataset convert.Datasets
 
 	// is there already a cellection with the same s2 key?
-	existing, _ := params.LevelDB.Get(token, nil)
+	existing, _ := current.LevelDB.Get(token, nil)
 
 	log.Printf("Inbound dataset:\n%v",string(existing))
 
