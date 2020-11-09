@@ -25,9 +25,9 @@ const (
 	currentpoints = "/home/scott/motionemulator/circle_of_points.csv"
 
 	//set the s2 cell parameters
-	maxLevel = 10
-	minLevel = 10
-	maxCells = 10
+	maxLevel = 12
+	minLevel = 12
+	maxCells = 12
 )
 
 type CParams struct {
