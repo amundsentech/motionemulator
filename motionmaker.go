@@ -22,7 +22,7 @@ import (
 const (
 	currentleveldbpath = "/data/leveldb/"
 	currentdb = "current"
-	currentpoints = "~/go/src/github.com/amundsentech/motionemulator/circle_of_points.csv"
+	currentpoints = "/home/scott/motionemulator/circle_of_points.csv"
 
 	//set the s2 cell parameters
 	maxLevel = 10
@@ -104,7 +104,7 @@ func fetchData() <-chan convert.FeatureInfo {
 		// connect to and parse CSV of points
 		csvfile, err := os.Open(currentpoints)
 		if err != nil {
-			log.Fatalln("Couldn't open the csv file", err)
+			log.Fatalln("Error with fetching the csv file:", err)
 		}
 
 		// Parse the file
