@@ -22,7 +22,7 @@ import (
 const (
 	currentleveldbpath = "/data/leveldb/"
 	currentdb = "current"
-	currentpoints = "~/go/src/github.com/amundsentech/circle_of_points.csv"
+	currentpoints = "~/go/src/github.com/amundsentech/motionemulator/circle_of_points.csv"
 
 	//set the s2 cell parameters
 	maxLevel = 10
