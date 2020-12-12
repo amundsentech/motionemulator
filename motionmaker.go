@@ -128,6 +128,8 @@ func fetchData() <-chan convert.FeatureInfo {
 				y, err := strconv.ParseFloat(record[1], 64)
 				z, err := strconv.ParseFloat(record[2], 64)
 
+				z = z+80
+
 				feature.GeomType = "Point"
 				feature.SRID = "3857"
 				feature.ID = "endless circle"
